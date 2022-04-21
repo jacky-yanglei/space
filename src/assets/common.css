@@ -1,0 +1,76 @@
+@font-face {
+    font-family: '机甲超级黑';
+    src: url('/tsmfront/static/common/字魂152号-机甲超级黑.ttf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    font-family: '机甲超级黑';
+    font-size: 18px;
+}
+
+body #app {
+    font-family: '机甲超级黑';
+    background-color: #000;
+}
+
+* {
+    font-family: '机甲超级黑';
+}
+
+body input {
+    font-family: '机甲超级黑';
+}
+
+body select {
+    font-family: '机甲超级黑';
+}
+
+.title img {
+    width: 360px !important;
+}
+
+.el-message-box__wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.el-message-box {
+    max-width: 100%;
+}
+
+.el-message {
+    min-width: 80%;
+    top: 45%;
+}
+
+div {
+    box-sizing: border-box;
+}
+
+.page input {
+    background-image: url(../assets/input.png) !important;
+    border: 0px !important;
+    background-size: 100% 100% !important;
+}
+.btn{
+    text-align: center;
+}
+.btn button {
+    background-image: url('../assets/exchange/btn-bg.png');
+    height: 40px;
+    width: 280px;
+    margin: auto;
+    background-color: transparent;
+    border: none;
+    color: white;
+    outline: none;
+}
+
+.video-js .vjs-big-play-button {
+    top: 50%!important;
+    left: 50%!important;
+    transform: translate(-50%, -50%);
+}
