@@ -22,6 +22,8 @@ const store = new Vuex.Store({
             forceChooseLine: false,
             forceChoose: [],
             hasAnswer: {}, // 当前可以回复的群组
+            imgView: false,  // 预览聊天中的图片
+            imgViewBase64: '', 
             choosedBranch: {
                 
             },

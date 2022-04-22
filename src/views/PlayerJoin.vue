@@ -33,7 +33,8 @@ export default {
   data() {
     return {
       roomInfo: {},
-      joiner:[]
+      joiner:[],
+      clickStart: false,
     };
   },
   computed: {
@@ -176,8 +177,17 @@ export default {
     postGetRoomInfo() {
     },
     startGame() {
-        ws.status = false;
+      if (this.clickStart) {
+        return;
+      }
+      this.clickStart = true
+      ws.status = false;
+      ws.focusClose = true;
+      ws.WebSocket.onclose = () => {
+        this.clickStart = false;
         this.$router.push("/controlCenter/" + this.$route.params.roomid);
+      }
+      ws.WebSocket.close();
     },
   },
 };

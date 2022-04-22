@@ -4,7 +4,7 @@
         :custom-class="'dialog'"
         title=""
         :destroy-on-close="true"
-        :visible.sync="$store.state.forceTextModel"
+        :visible.sync="$store.state.imgView"
         :close-on-click-modal="false"
         @close="close()"
         :modal-append-to-body="false"
@@ -12,17 +12,9 @@
         :fullscreen="true">
         <div class="page">
             <div class="context">
-                <div class="content">
-                  <div class="title">{{ title }}</div>
-                  <div v-html="contentHtml(contentData)"></div>
-                </div>
-                <div class="footer">
-                  <div class="btn finish" v-if="finish">
-                    <button>请等待其他玩家阅读完成</button>
-                  </div>
-                  <div class="btn" v-if="!finish">
-                    <button @click="end()">阅读完成</button>
-                  </div>
+                <div class="close" @click="close()">关闭</div>
+                <div class="img-block">
+                  <img v-if="$store.state.imgViewBase64" :src="$store.state.imgViewBase64" alt="">
                 </div>
             </div>
         </div>
@@ -33,39 +25,19 @@
 export default {
     data() {
       return {
-        finish: false,
       }
     },
     computed: {
-      title() {
-        if (this.$store.state.forceText) {
-          return this.$store.state.forceText.data.title;
-        }
-        return "";
-      },
-      contentHtml() {
-        return (data) => {
-          let str = data.replace(/\n/g, '<br/>&nbsp;&nbsp;&nbsp;&nbsp;')
-          return '&nbsp;&nbsp;&nbsp;&nbsp;' + str;
-        }
-      },
-      contentData() {
-        if (this.$store.state.forceText) {
-          return this.$store.state.forceText.data.content
-        }
-        return '';
-      }
+      
     },
     mounted() {
     },
     methods: {
       close() {
-        this.finish = false;
+          this.$store.state.imgView = false;
+          this.$store.state.imgViewBase64 = '';
       },
       end() {
-        this.finish = true;
-        this.$store.state.webSocket.sendObjMsg({op: 'event_finish', data: {id: this.$store.state.forceText.id.toString(), value: ''}});
-        // this.$store.state.webSocket.sendObjMsg({op: 'event_finish', data: ''})
       }
     }
 }
@@ -96,6 +68,34 @@ export default {
       position: relative;
       background-image: url('../assets/exchange/btn-bg-gery.png');
     }
+  }
+  .img-block {
+    width: 100%;
+    overflow: auto;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    img {
+      width: 100%;
+      // height: 100vh;
+      vertical-align: middle;
+    }
+  }
+  
+  .close {
+    color: #ffffff;
+    cursor: pointer;
+    text-align: right;
+    position: absolute;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    right: 20px;
+    top: 20px;
+    z-index: 1111;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    padding: 10px;
   }
 }
 .content {

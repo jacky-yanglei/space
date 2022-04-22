@@ -6,7 +6,7 @@
       <div class="level">
         事件列表
       </div>
-        <div class="chat-item">
+        <!-- <div class="chat-item">
           <img src="../assets/chat-icon.png" alt="" />
 
           <div class="msg">
@@ -20,7 +20,7 @@
          <div class="msg">
            第二幕：《普京拍案，大喊出兵》
           </div>
-        </div>
+        </div> -->
 
       
       </div>

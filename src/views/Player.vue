@@ -2,13 +2,14 @@
   <div class="content">
       <router-view/>
       <banner></banner>
+      <WaitDMComponent></WaitDMComponent>
+      <ChatDetaileComponent></ChatDetaileComponent>
+      <ChatVideoComponent></ChatVideoComponent>
+      <ImgViewComponent></ImgViewComponent>
       <VideoComponent></VideoComponent>
       <TextComponent></TextComponent>
       <ChooseEvent></ChooseEvent>
-      <ChatDetaileComponent></ChatDetaileComponent>
-      <WaitDMComponent></WaitDMComponent>
       <ColletComponent></ColletComponent>
-      <ChatVideoComponent></ChatVideoComponent>
   </div>
 </template>
 <script>
@@ -20,6 +21,7 @@ import ChooseEvent from "../components/ChooseEvent.vue";
 import ChatDetaileComponent from "../components/ChatDetaileComponent.vue";
 import ColletComponent from "../components/ColletComponent.vue";
 import ChatVideoComponent from "../components/ChatVideoComponent.vue";
+import ImgViewComponent from "../components/ImgViewComponent.vue";
 import Websocket from "../ws/ws.js"
 export default {
   components: {
@@ -31,6 +33,7 @@ export default {
     WaitDMComponent,
     ColletComponent,
     ChatVideoComponent,
+    ImgViewComponent,
   },
   data() {
     return {

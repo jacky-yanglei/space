@@ -27,21 +27,21 @@
                   <img :src="item.speaker.img" alt=""/>
                 </div>
                 <div class="text" :class="(typeof item.speaker === 'object' && item.speaker.id !== $store.state.userInfo.id)?'player-text':''">
-                  <div class="img">
+                  <div class="img" @click="viewImg('data:image/png;base64,' + img)">
                     <img :src="'data:image/png;base64,' + img" alt="">
                   </div>
                 </div>
               </div>
             </template>
             <template v-if="item.video">
-              <div v-for="(video, i) in imgList(item.video)" @click="openVideo(item.video)" :key="index + '-' + 'video-' + i" class="msg" :class="(typeof item.speaker === 'object' && item.speaker.id === $store.state.userInfo.id)?'right':'left'">
+              <div v-for="(video, i) in imgList(item.video)" :key="index + '-' + 'video-' + i" class="msg" :class="(typeof item.speaker === 'object' && item.speaker.id === $store.state.userInfo.id)?'right':'left'">
                 <div v-if="item.speaker === 'eleven'" class="icon" @click="showDialog">
                   <img src="../assets/chat-icon.png" alt=""/>
                 </div>
                 <div class="icon" v-else>
                   <img :src="item.speaker.img" alt=""/>
                 </div>
-                <div class="text" :class="(typeof item.speaker === 'object' && item.speaker.id !== $store.state.userInfo.id)?'player-text':''">
+                <div class="text" @click="openVideo(item.video)" :class="(typeof item.speaker === 'object' && item.speaker.id !== $store.state.userInfo.id)?'player-text':''">
                   <div class="img">
                     <img :src="'data:image/jpg;base64,' + item.pre_video_img" alt=""/>
                   </div>
@@ -132,6 +132,11 @@ export default {
     });
   },
   methods: {
+    // 打开表情包 图片
+    viewImg(base64) {
+      this.$store.state.imgView = true;
+      this.$store.state.imgViewBase64 = base64;
+    },
     // 打开观看视频
     openVideo(url) {
       this.$store.state.chatVideoModal = true;

@@ -42,31 +42,32 @@
               <!-- <button :class="!eventId?'disabled':''" @click="waitDm()">{{eventId == 1?'开始游戏':'开始探案'}}</button> -->
             </div>
 
-            <div class="branch">路线分支（3个分支）</div>
-
-            <div class="branch-table">
-              <table>
-                <tr>
-                  <td></td>
-                  <td>完成</td>
-                  <td>未完成</td>
-                </tr>
-                <tr>
-                  <td>医院</td>
-                  <td>5</td>
-                  <td>3</td>
-                </tr>
-                <tr>
-                  <td>学校</td>
-                  <td>10</td>
-                  <td>0</td>
-                </tr>
-                <tr>
-                  <td>工地</td>
-                  <td>1</td>
-                  <td>2</td>
-                </tr>
-              </table>
+            <div style="display: none;">
+              <div class="branch">路线分支（3个分支）</div>
+              <div class="branch-table">
+                <table>
+                  <tr>
+                    <td></td>
+                    <td>完成</td>
+                    <td>未完成</td>
+                  </tr>
+                  <tr>
+                    <td>医院</td>
+                    <td>5</td>
+                    <td>3</td>
+                  </tr>
+                  <tr>
+                    <td>学校</td>
+                    <td>10</td>
+                    <td>0</td>
+                  </tr>
+                  <tr>
+                    <td>工地</td>
+                    <td>1</td>
+                    <td>2</td>
+                  </tr>
+                </table>
+              </div>
             </div>
 
             <div class="time-mamage">时间管理（预计{{ time.total }}分钟）</div>
@@ -157,21 +158,30 @@ export default {
     }
   },
   created() {
-    this.initWs();
+    
   },
   mounted() {
+    this.initWs();
+    // this.$alert('12132', '提示', {
+    //   customClass: 'space-message-box',
+    //   confirmButtonText: '确定',
+    //   type: 'warning',
+    //   callback: action => {
+    //     console.log(action);
+    //   }
+    // });
   },
   methods: {
     // 踢出玩家
     deletePlayer(id) {
       this.$confirm('此操作将把玩家踢出房间, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          ws.send(JSON.stringify({op: 'drop_player', data: id}))
-        }).catch(() => {      
-        });
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        ws.send(JSON.stringify({op: 'drop_player', data: id}))
+      }).catch(() => {      
+      });
     },
 
     // 发放线索
@@ -195,32 +205,37 @@ export default {
       }
     },
     initWs() {
-      localStorage.setItem(
-        "playerInfo",
-        JSON.stringify({
-          roomId: this.$route.params.roomid,
-          role: "admin",
-          phone: "",
-        })
-      );
-      if (ws.status) {
-        ws.send(
-          JSON.stringify({
-            op: "dm_auth",
-            data: "Bearer " + localStorage.getItem("token"),
-          })
-        );
-        
-        this.postGetRoomInfo();
-        ws.onmessage((e) => {
-          this.onmessage(e);
-        });
-      } else {
-        this.reloadWs();
-      }
+      ws.focusClose = false;
+      this.reloadWs();
       ws.reloadCallback = () => {
         this.reloadWs();
       };
+      // localStorage.setItem(
+      //   "playerInfo",
+      //   JSON.stringify({
+      //     roomId: this.$route.params.roomid,
+      //     role: "admin",
+      //     phone: "",
+      //   })
+      // );
+      // if (ws.status) {
+      //   ws.send(
+      //     JSON.stringify({
+      //       op: "dm_auth",
+      //       data: "Bearer " + localStorage.getItem("token"),
+      //     })
+      //   );
+        
+      //   this.postGetRoomInfo();
+      //   ws.onmessage((e) => {
+      //     this.onmessage(e);
+      //   });
+      // } else {
+      //   this.reloadWs();
+      // }
+      // ws.reloadCallback = () => {
+      //   this.reloadWs();
+      // };
     },
     reloadWs() {
       ws.reload(
@@ -338,8 +353,8 @@ export default {
           if(data.status === 200) {
             ws.focusClose = true;
             ws.WebSocket.close();
-            this.$router.replace("/home");
             this.$message({message: '房间已关闭', type: 'success'});
+            this.$router.replace("/home");
           } else {
             this.$message({message: data.message, type: 'error'});
           }
@@ -593,6 +608,12 @@ export default {
         background: rgba(113, 199, 213, 1);
       }
     }
+  }
+}
+
+::v-deep {
+  .space-message-box {
+    background-color: transparent;
   }
 }
 </style>

@@ -20,9 +20,12 @@ class joinRoomWs {
         this.WebSocket.onclose = (e) => {
             console.log('onclose WebSocket断开链接');
             console.log(e);
-            setTimeout(() => {
-                this.reloadCallback();
-            }, 1000);
+            if (!ws.focusClose) {
+                setTimeout(() => {
+                    this.reloadCallback();
+                }, 1000);
+            }
+            
         }
     }
     reloadCallback(callback) {

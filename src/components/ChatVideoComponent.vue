@@ -77,9 +77,15 @@ export default {
     cursor: pointer;
     text-align: right;
     position: absolute;
+    height: 40px;
+    display: flex;
+    align-items: center;
     right: 20px;
     top: 20px;
     z-index: 1111;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    padding: 10px;
   }
 }
 ::v-deep{
