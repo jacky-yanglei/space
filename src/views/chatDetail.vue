@@ -238,6 +238,11 @@ export default {
   padding: 0 24px;
   height: calc(100vh - 53px - 130px);
   overflow-y: auto;
+  font-size: 16px;
+  line-height: 32px;
+  * {
+    font-family: auto !important;;
+  }
   .msg {
     display: flex;
     margin-bottom: 20px;
@@ -253,7 +258,6 @@ export default {
       padding: 10px;
       border-radius: 10px;
       .img {
-        // margin-top: 10px;
         img {
           max-width: 200px;
         }
@@ -293,6 +297,9 @@ export default {
   margin-bottom: 20px;
 }
 .reply-box {
+  * {
+    font-family: auto;
+  }
   position: absolute;
   bottom: 3px;
   height: 150px;
@@ -308,7 +315,7 @@ export default {
   > div {
     text-align: center;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 16px;
     width: 320px;
     max-height: 200px;
     overflow-y: auto;
@@ -328,12 +335,20 @@ export default {
   display: flex;
   padding: 10px;
   z-index: 5;
+  button {
+    font-family: auto;
+  }
   ::v-deep {
     .el-input {
       height: 40px;
       border-radius: 4px;
+      input {
+        font-family: auto;
+      }
+      
 
       input {
+        font-size: 16px;
         background-image: none !important;
         color: #fff;
         border: 1px solid rgba(93, 110, 112, 1);
@@ -344,6 +359,10 @@ export default {
       margin-left: 10px;
       background: rgba(113, 199, 213, 1);
       color: #fff;
+      * {
+        font-family: auto;
+        font-size: 16px;
+      }
     }
   }
 }

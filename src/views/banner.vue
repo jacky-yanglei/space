@@ -74,6 +74,7 @@ div {
   display: flex;
   margin: 0 auto;
   max-width: 750px;
+  font-size: 18px;
   li {
     width: 25%;
     line-height: 50px;

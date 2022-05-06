@@ -13,7 +13,7 @@ class joinRoomWs {
         // Vue.$message('121312312');
         this.roomId = roomId;
         let url = 'wss://wx.tmgxbxwl.cn/tsm/ws/';
-        // let url = 'ws://192.168.100.202:8000/ws/';
+        // let url = 'ws://192.168.100.11:8000/ws/';
         // let url = 'ws://confusion.imwork.net:24643/ws/';
         this.WebSocket = new WebSocket(url + roomId + '/');
         this.status = true;

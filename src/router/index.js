@@ -7,7 +7,6 @@ import Register from '../views/ExchangeRegister.vue'
 import Login from '../views/DmLogin.vue'
 import playerLogin from '../views/PlayerLogin.vue'
 import notFound from '../views/404.vue'
-import videoTest from '../views/videoTest.vue'
 import chat from '../views/chat.vue'
 // import chatDetail from '../views/chatDetail.vue'
 import event from '../views/event.vue'
@@ -22,11 +21,6 @@ const routes = [
     path: '',
     name: 'checkId',
     component: notFound
-  },
-  {
-    path: '/video',
-    name: 'videoTest',
-    component: videoTest
   },
   {
     path: '/home',

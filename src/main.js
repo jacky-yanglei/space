@@ -9,15 +9,10 @@ import store from './store/store'
 import App from './App.vue'
 import router from './router'
 
-import VueVideoPlayer from 'vue-video-player'
-import 'video.js/dist/video-js.css'
-
 Vue.config.productionTip = false;
 
 Vue.use(VueRouter);
 Vue.use(ElementUI);
-
-Vue.use(VueVideoPlayer);
 
 
 

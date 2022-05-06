@@ -27,17 +27,17 @@ export default {
   },
   methods: {
     getData(){
-           axios.get(
-                process.env.VUE_APP_BASE_URL+ '/expert_article/'
-            ).then(({data}) => {
-                if(data.status === 200) {
-                    this.list = data.data
-                } else {
-                    this.$message({message: data.message, type: 'error'});
-                }
-            }).catch(() => {
-                this.$message({message: '获取列表失败', type: 'error'});
-            })
+      axios.get(
+          process.env.VUE_APP_BASE_URL+ '/expert_article/'
+      ).then(({data}) => {
+          if(data.status === 200) {
+              this.list = data.data
+          } else {
+              this.$message({message: data.message, type: 'error'});
+          }
+      }).catch(() => {
+          this.$message({message: '获取列表失败', type: 'error'});
+      })
     },
     showMsg(item){
         this.$alert(item.content, item.title, {
@@ -47,7 +47,7 @@ export default {
     }
   },
   created(){
-      this.getData()
+    this.getData()
   }
 };
 </script>

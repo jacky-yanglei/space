@@ -17,12 +17,23 @@
                   <div v-html="contentHtml(contentData)"></div>
                 </div>
                 <div class="footer">
-                  <div class="btn finish" v-if="finish">
-                    <button>请等待其他玩家阅读完成</button>
-                  </div>
-                  <div class="btn" v-if="!finish">
-                    <button @click="end()">阅读完成</button>
-                  </div>
+                  <template v-if="$store.state.forceText && $store.state.forceText.type === 'wait_ready'">
+                    <div class="btn finish" v-if="finish">
+                      <button>请等待其他玩家准备就绪</button>
+                    </div>
+                    <div class="btn" v-if="!finish">
+                      <button @click="end()">准备就绪</button>
+                    </div>
+                  </template>
+                  <template v-else>
+                    <div class="btn finish" v-if="finish">
+                      <button>请等待其他玩家阅读完成</button>
+                    </div>
+                    <div class="btn" v-if="!finish">
+                      <button @click="end()">阅读完成</button>
+                    </div>
+                  </template>
+                  
                 </div>
             </div>
         </div>
@@ -86,11 +97,19 @@ export default {
   overflow: hidden;
   min-height: 100%;
   position: relative;
+  * {
+    font-family: auto;
+    font-size: 16px;
+  }
   .footer {
     position: absolute;
     height: 50px;
     bottom: 20px;
     width: 100%;
+    * {
+      font-size: 18px;
+      font-family: '机甲超级黑';
+    }
     .finish button {
       opacity: 0.5;
       position: relative;
@@ -103,8 +122,9 @@ export default {
     height: calc(100vh - 80px);
     color: white;
     padding: 20px 16px;
-    font-size: 15px;
-    line-height: 1.5;
+    font-size: 16px;
+    line-height: 2;
+    letter-spacing: 1px;
     .title {
       font-size: 50px;
       line-height: 1.1;

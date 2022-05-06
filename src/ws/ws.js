@@ -19,7 +19,7 @@ export default class {
     }
     init(isReload) {
         let url = 'wss://wx.tmgxbxwl.cn/tsm/ws/';
-        // let url = 'ws://192.168.100.202:8000/ws/';
+        // let url = 'ws://192.168.100.11:8000/ws/';
         // let url = 'ws://confusion.imwork.net:24643/ws/';
         this.WebSocket = new WebSocket(url + this.roomId + '/');
         this.WebSocket.onopen = () => {
@@ -27,9 +27,9 @@ export default class {
             this.context.$store.commit('socketReady');
             this.context.$store.commit('webSocket', this);
             if (isReload) {
-                this.sendObjMsg({"op":"player_auth", "data": sessionStorage.getItem('player_id')});
+                this.sendObjMsg({"op":"player_auth", "data": window.localStorage.getItem('player_id')});
             } else {
-                this.sendObjMsg({"op":"player_auth", "data": sessionStorage.getItem('player_id') || this.authCode || 'ouN_T5kHFqqgBsBxPhw9bLdfN2O0'});
+                this.sendObjMsg({"op":"player_auth", "data": window.localStorage.getItem('player_id') || this.authCode || 'ouN_T5kHFqqgBsBxPhw9bLdfN2O0'});
             }
         }
         this.WebSocket.onerror = () => {
@@ -83,7 +83,7 @@ export default class {
             // 玩家鉴权成功保存玩家信息
             else if(data.op === 'player_auth' && data.success) {
                 this.context.$store.commit('userInfo', data.data);
-                sessionStorage.setItem('player_id', data.data.id);
+                window.localStorage.setItem('player_id', data.data.id);
                 this.authCode = null; // 使用过一次微信授权之后就删除这个授权码
             }
             // 如果接收到强制展示的视频、音频信息
@@ -93,8 +93,12 @@ export default class {
                 this.context.$store.commit('playVideo');
             }
             // 如果接收到强制展示的文本信息
-            else if (data.op === 'text' || data.op === 'wait_text' ) {
-                this.context.$store.commit('forceText', data.data); // 赋值强制文本
+            else if (data.op === 'text' || data.op === 'wait_text'  || data.op === 'wait_ready') {
+                let msg = data.data;
+                if (data.op === 'wait_ready') {
+                    msg.type = "wait_ready";
+                }
+                this.context.$store.commit('forceText', msg); // 赋值强制文本
                 this.context.$store.commit('forceTextModel', true); // 打开model
             }
             // 关闭强制展示的文本

@@ -18,7 +18,7 @@ module.exports = {
     proxy: {
         '/tsm/api/': {     //这里最好有一个 /
             target: 'https://wx.tmgxbxwl.cn/',  // 后台接口域名
-            // target: 'http://192.168.100.202:8000/',  // 后台接口域名
+            // target: 'http://192.168.100.11:8000/',  // 后台接口域名
             // target: 'http://confusion.imwork.net:24643/',  // 后台接口域名
             ws: true,        //如果要代理 websockets，配置这个参数
             secure: true,  // 如果是https接口，需要配置这个参数
