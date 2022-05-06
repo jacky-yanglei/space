@@ -10,6 +10,15 @@ body {
     font-size: 18px;
 }
 
+.el-message-box__message {
+    overflow-y: auto;
+    max-height: 50vh;
+}
+
+.el-message-box__message * {
+    font-family: auto;
+}
+
 body #app {
     font-family: '机甲超级黑';
     background-color: #000;

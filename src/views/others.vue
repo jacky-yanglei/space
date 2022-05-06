@@ -2,12 +2,13 @@
   <div class="page">
     <div class="bg">
       <div class="content">
-
-    <div class="level">
-        访问等级:7
-      </div>
-        <div class="chat-item" v-for="(item,index) in list" :key="index" @click="showMsg(item)">
+        <div class="level">
+          专家团
+        </div>
+        <div class="scroll">
+          <div class="chat-item" v-for="(item,index) in list" :key="index" @click="showMsg(item)">
             {{item.title}}
+          </div>
         </div>
       </div>
     </div>
@@ -28,7 +29,7 @@ export default {
   methods: {
     getData(){
       axios.get(
-          process.env.VUE_APP_BASE_URL+ '/expert_article/'
+          process.env.VUE_APP_BASE_URL+ 'expert_article/'
       ).then(({data}) => {
           if(data.status === 200) {
               this.list = data.data
@@ -40,10 +41,13 @@ export default {
       })
     },
     showMsg(item){
-        this.$alert(item.content, item.title, {
-          confirmButtonText: '关闭',
-         
-        });
+        this.$alert(
+          item.content,
+          item.title, 
+          {
+            confirmButtonText: '关闭',
+          }
+        );
     }
   },
   created(){
@@ -65,8 +69,15 @@ export default {
 .content {
   backdrop-filter: blur(4px);
   background: rgba(113, 199, 213, 0.12);
-  overflow: hidden;
-  min-height: 100%;
+  overflow-y: hidden;
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 54px);
+  .scroll {
+    flex: 1;
+    height: 1px;
+    overflow: auto;
+  }
 }
 
 .chat-item {
@@ -75,10 +86,9 @@ export default {
   margin: auto;
   margin-bottom: 20px;
   border-radius: 12px;
-    padding: 20px 10px;
-    text-align: center;
-    color:#fff;
- 
+  padding: 20px 10px;
+  text-align: center;
+  color:#fff;
 }
 
 .level{

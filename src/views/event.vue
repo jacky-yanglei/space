@@ -2,43 +2,56 @@
   <div class="page">
     <div class="bg">
       <div class="content">
-
-      <div class="level">
-        事件列表
-      </div>
-        <!-- <div class="chat-item">
-          <img src="../assets/chat-icon.png" alt="" />
-
-          <div class="msg">
-           第一幕：《乌克兰作妖，美国撑腰》
+        <div class="level">
+          事件列表
+        </div>
+        <div class="scroll">
+          <div class="chat-item" v-for="(item,index) in list" :key="index" @click="showMsg(item)">
+            {{item.id}}
           </div>
         </div>
-
-        <div class="chat-item">
-          <img src="../assets/chat-icon.png" alt="" />
-
-         <div class="msg">
-           第二幕：《普京拍案，大喊出兵》
-          </div>
-        </div> -->
-
-      
       </div>
     </div>
+
+    <!-- <banner></banner> -->
   </div>
 </template>
 <script>
+// import banner from "./banner.vue";
+import axios from 'axios';
 export default {
+  // components: { banner },
   data() {
     return {
-      input: "",
+      list: [],
     };
   },
   methods: {
-    push() {
-      this.$router.push("/script/register/" + this.input);
+    getData(){
+      axios.get(
+          process.env.VUE_APP_BASE_URL+ `event/${this.$route.params.id}/${window.localStorage.getItem('player_id')}`
+      ).then(({data}) => {
+          if(data.status === 200) {
+              this.list = data.data
+          } else {
+              this.$message({message: data.message, type: 'error'});
+          }
+      }).catch(() => {
+          this.$message({message: '获取列表失败', type: 'error'});
+      })
     },
+    showMsg(item){
+        this.$alert(
+          item.content + item.content + item.content + item.content + item.content,
+          item.title, 
+          {
+            confirmButtonText: '关闭',
+          });
+    }
   },
+  created(){
+    this.getData()
+  }
 };
 </script>
 
@@ -55,30 +68,26 @@ export default {
 .content {
   backdrop-filter: blur(4px);
   background: rgba(113, 199, 213, 0.12);
-  overflow: hidden;
-  min-height: 100%;
+  overflow-y: hidden;
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 54px);
+  .scroll {
+    flex: 1;
+    height: 1px;
+    overflow: auto;
+  }
 }
 
 .chat-item {
-  display: flex;
   border: 1px solid rgba(113, 199, 213, 1);
   max-width: 90%;
   margin: auto;
   margin-bottom: 20px;
   border-radius: 12px;
-
-  img {
-    width: 50px;
-    padding: 10px;
-  }
-
-  .msg{
-    width: calc(100% - 80px);
-    color: #fff;
-    padding-top: 10px;
-    }
-
- 
+  padding: 20px 10px;
+  text-align: center;
+  color:#fff;
 }
 
 .level{
