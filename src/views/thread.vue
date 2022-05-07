@@ -10,7 +10,9 @@
         </div>
         <div class="scroll">
           <div v-for="(item, index) in collectedTrace" :key="index" class="chat-item">
-            <img :src="'data:image/png;base64,' + item.img" alt="" />
+            <div>
+              <img :src="'data:image/png;base64,' + item.img" alt="" />
+            </div>
             <div class="msg">
               {{ item.name }}
             </div>
@@ -153,8 +155,10 @@ export default {
   margin: auto;
   margin-bottom: 20px;
   border-radius: 12px;
+  align-items: center;
 
   img {
+    vertical-align: middle;
     width: 50px;
     padding: 10px;
   }
@@ -162,8 +166,7 @@ export default {
   .msg{
     width: calc(100% - 80px);
     color: #fff;
-    line-height: 70px;
-    }
+  }
 
  
 }

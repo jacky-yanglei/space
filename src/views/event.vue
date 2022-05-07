@@ -26,6 +26,14 @@ export default {
       list: [],
     };
   },
+  computed: {
+    contentHtml() {
+      return (data) => {
+        let str = data.replace(/\n/g, '<br/>&nbsp;&nbsp;&nbsp;&nbsp;')
+        return '&nbsp;&nbsp;&nbsp;&nbsp;' + str;
+      }
+    },
+  },
   methods: {
     getData(){
       axios.get(
@@ -42,9 +50,10 @@ export default {
     },
     showMsg(item){
         this.$alert(
-          item.content + item.content + item.content + item.content + item.content,
+          this.contentHtml(item.content),
           item.title, 
           {
+            dangerouslyUseHTMLString: true,
             confirmButtonText: '关闭',
           });
     }

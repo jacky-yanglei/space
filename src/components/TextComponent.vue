@@ -99,7 +99,8 @@ export default {
   position: relative;
   * {
     font-family: auto;
-    font-size: 16px;
+    font-size: 24px;
+    letter-spacing: 4px;
   }
   .footer {
     position: absolute;
