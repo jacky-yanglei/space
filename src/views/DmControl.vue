@@ -35,12 +35,15 @@
               已有7/12名玩家完成了该幕的文字阅读，
               DM可自行决定点击下方按钮开始这一幕 的探案游戏。
             </div> -->
-
+            
             <div class="btn">
               <button v-if="!eventId" class="disabled">{{ eventName }}</button>
               <button v-else @click="waitDm()">{{ eventName }}</button>
-              <!-- <button :class="!eventId?'disabled':''" @click="waitDm()">{{eventId == 1?'开始游戏':'开始探案'}}</button> -->
+              <div v-if="timer.total_time" style="text-align: center;color: #fff;">
+                {{ '倒计时:' + timerTotal + '秒' }}
+              </div>
             </div>
+            
 
             <div style="display: none;">
               <div class="branch">路线分支（3个分支）</div>
@@ -135,11 +138,18 @@ export default {
       joiner: [],
       eventId: null,
       eventName: '游戏中',
+      timer: {  // wait_dm的计时器
+        start_time: 0,
+        current_time: 0,
+        total_time: 0,
+        timer: 0,
+      },
       traceList: [],
       time: {
         total: 60,
         current: 0,
-      }
+      },
+      timerTimeout: null,
     };
   },
   computed: {
@@ -155,7 +165,10 @@ export default {
     // 可发放线索
     noSendTrace() {
       return this.traceList.filter(elem => !elem.is_send)
-    }
+    },
+    timerTotal() {
+      return this.timer.total_time - (this.timer.current_time - this.timer.start_time) - this.timer.timer;
+    },
   },
   created() {
     
@@ -170,6 +183,9 @@ export default {
     //     console.log(action);
     //   }
     // });
+  },
+  beforeDestroy() {
+    clearTimeout(this.timerTimeout);
   },
   methods: {
     // 踢出玩家
@@ -196,6 +212,15 @@ export default {
         ws.send(JSON.stringify({op: "event_finish", data: {id: this.eventId, value: ''}}));
         this.eventId = null;
         this.eventName = '游戏中';
+        this.timer = {
+          start_time: 0,
+          current_time: 0,
+          total_time: 0,
+          timer: 0,
+        }
+        if(this.timerTimeout) {
+          clearTimeout(this.timerTimeout);
+        }
       }
     },
     handleClick() {
@@ -203,6 +228,18 @@ export default {
         this.initCode();
         this.isInitCode = true;
       }
+    },
+    doTimer() {
+      this.timerTimeout = setTimeout(() => {
+        if (this.timerTotal <= 0) {
+          if(this.timerTimeout) {
+            clearTimeout(this.timerTimeout);
+          }
+          return;
+        }
+        this.timer.timer++;
+        this.doTimer();
+      }, 1000);
     },
     initWs() {
       ws.focusClose = false;
@@ -262,6 +299,15 @@ export default {
         }
         this.eventId = e.data.id;
         this.eventName = e.data.data;
+        if (e.data.total_time) {
+          this.timer = {
+            start_time: e.data.start_time,
+            current_time: e.data.current_time,
+            total_time: e.data.total_time,
+            timer: 0,
+          }
+          this.doTimer();
+        }
       }
       else if (e.op === 'dm_trace') {
         this.traceList = e.data
@@ -278,36 +324,6 @@ export default {
           }
         });
       }
-      // if (e.data_type === "init" || e.data_type === "reconnect") {
-      //   if (e.success) {
-      //     sessionStorage.setItem("role", "admin");
-      //   } else {
-      //     this.$message({ message: e.message, type: "error" });
-      //   }
-      // }
-      // if (e.data_type === "room_info") {
-      //   if (e.success) {
-      //     this.roomInfo = e.data;
-      //   }
-      // }
-      // if (e.data_type === "check_token") {
-      //   if (!e.success) {
-      //     this.$alert(`${e.message}`, "提示", {
-      //       type: "error",
-      //       confirmButtonText: "确定",
-      //       callback: () => {
-      //         ws.focusClose = true;
-      //         ws.WebSocket.close();
-      //         localStorage.removeItem("playerInfo");
-      //         localStorage.removeItem("token");
-      //         setTimeout(() => {
-      //           location.href = "/tsmfront/";
-      //         }, 10);
-      //       },
-      //     });
-      //   }
-      // }
-      
     },
     postGetRoomInfo() {
       ws.send(JSON.stringify({op: "get_room_info", data: "" }));
@@ -553,6 +569,16 @@ export default {
   }
   .btn {
     margin: 30px 0px;
+  }
+  .btn button {
+    background-image: none;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 16px;
+    border: 3px solid rgba(211, 249, 255, 1);
+    color: rgb(255, 255, 255);
+    box-sizing: border-box;
+    background: linear-gradient(147.39deg, rgba(0, 161, 196, 1) 30.76%, rgba(113, 199, 213, 1) 91.4%), rgba(113, 199, 213, 1);
   }
   .branch {
     color: rgba(113, 199, 213, 1);

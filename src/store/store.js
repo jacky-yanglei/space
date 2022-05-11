@@ -141,7 +141,11 @@ const store = new Vuex.Store({
                 let chatList = [];
                 for (let i = 0; i < arr.length; i++) {
                     if (arr[i].speaker == 'player') {
+                        if (state.replyChat[key] && state.replyChat[key].chat && state.replyChat[key].chat.type === 'wait_ready') {
+                            continue;
+                        }
                         if (!state.replyChat[key]) {
+                            
                             state.replyChat[key] = {
                                 groupName: key,
                                 chat: arr[i],
@@ -150,6 +154,10 @@ const store = new Vuex.Store({
                         state.replyChat[key].chat = arr[i];
                         state.replyChat = Object.assign({}, state.replyChat);
                     } else {
+                        if (state.replyChat[key] && state.replyChat[key].chat && state.replyChat[key].chat.type === 'wait_ready') {
+                            chatList.push(arr[i]);
+                            continue;
+                        }
                         if (!state.replyChat[key]) {
                             state.replyChat[key] = {
                                 groupName: key,

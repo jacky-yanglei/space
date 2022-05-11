@@ -7,7 +7,7 @@
         </div>
         <div class="scroll">
           <div class="chat-item" v-for="(item,index) in list" :key="index" @click="showMsg(item)">
-            {{item.id}}
+            {{item.title}}
           </div>
         </div>
       </div>

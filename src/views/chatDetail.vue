@@ -51,7 +51,8 @@
           </template>
         </div>
         <div class="reply-box" v-if="hasReply">
-          <div @click="setReplay($store.state.replyChat[$store.state.chatDetailShowName])">{{ $store.state.replyChat[$store.state.chatDetailShowName].chat?$store.state.replyChat[$store.state.chatDetailShowName].chat.msg:'' }}</div>
+          <div v-if="$store.state.replyChat[$store.state.chatDetailShowName].chat && ($store.state.replyChat[$store.state.chatDetailShowName].chat.type === 'wait_ready')" class="text">所有探员准备就绪后开启下一环节</div>
+          <div :class="$store.state.replyChat[$store.state.chatDetailShowName].chat && ($store.state.replyChat[$store.state.chatDetailShowName].chat.type === 'wait_ready')?'wait-ready':''" @click="setReplay($store.state.replyChat[$store.state.chatDetailShowName])">{{ $store.state.replyChat[$store.state.chatDetailShowName].chat?$store.state.replyChat[$store.state.chatDetailShowName].chat.msg:'' }}</div>
         </div>
         <div class="send-box" v-if="$store.state.hasAnswer[$store.state.chatDetailShowName]">
           <el-input v-model="input" placeholder="请输入你的答案" :disabled="!$store.state.hasAnswer[$store.state.chatDetailShowName]"></el-input>
@@ -151,9 +152,15 @@ export default {
       dom.scrollTop = dom.scrollHeight;
     },
     setReplay(data) {
-      this.input = '';
-      this.$store.state.webSocket.sendObjMsg({op: 'event_finish', data: {"id": data.chat.id, "value": {'chat_id': data.chat.chat_id, "send_group": data.chat.group}}});
-      data.chat = null;
+      if (data.chat.type === 'wait_ready') {
+        this.input = '';
+        this.$store.state.webSocket.sendObjMsg({op: 'event_finish', data: {id: data.chat.id.toString(), value: ''}});
+        data.chat = null;
+      } else {
+        this.input = '';
+        this.$store.state.webSocket.sendObjMsg({op: 'event_finish', data: {"id": data.chat.id, "value": {'chat_id': data.chat.chat_id, "send_group": data.chat.group}}});
+        data.chat = null;
+      }
       this.$nextTick(() => {
         this.chatBoxBottom();
       });
@@ -312,7 +319,12 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  > div {
+  > div.text {
+    color: white;
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+  > div:not(.text) {
     text-align: center;
     cursor: pointer;
     font-size: 16px;
@@ -325,6 +337,11 @@ export default {
     color: rgb(255, 255, 255);
     box-sizing: border-box;
     background: linear-gradient(147.39deg, rgba(0, 161, 196, 1) 30.76%, rgba(113, 199, 213, 1) 91.4%), rgba(113, 199, 213, 1);
+    &.wait-ready {
+      background: rgba(240,16,83,0.15);
+      border: 3px solid rgba(240,16,83,0.65);
+      color: #F01053;
+    }
   }
 }
 
